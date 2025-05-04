@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static java.util.Optional.ofNullable;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -23,8 +21,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private final UserService userService;
+
+    public UserServiceImpl(UserRepository userRepository, UserServiceImpl userService) {
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Transactional(readOnly = true)
@@ -39,9 +40,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User create(User userToCreate) {
-        ofNullable(userToCreate).orElseThrow(() -> new BusinessException("User to create must not be null."));
-        ofNullable(userToCreate.getAccount()).orElseThrow(() -> new BusinessException("User account must not be null."));
-        ofNullable(userToCreate.getCard()).orElseThrow(() -> new BusinessException("User card must not be null."));
+        if (userToCreate == null) {
+            throw new BusinessException("User to create must not be null.");
+        }
+        if (userToCreate.getAccount() == null) {
+            throw new BusinessException("User account must not be null.");
+        }
+        if (userToCreate.getCard() == null) {
+            throw new BusinessException("User card must not be null.");
+        }
 
         this.validateChangeableId(userToCreate.getId(), "created");
         if (userRepository.existsByAccountNumber(userToCreate.getAccount().getNumber())) {
@@ -56,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User update(Long id, User userToUpdate) {
         this.validateChangeableId(id, "updated");
-        User dbUser = this.findById(id);
+        User dbUser = userService.findById(id);
         if (!dbUser.getId().equals(userToUpdate.getId())) {
             throw new BusinessException("Update IDs must be the same.");
         }
@@ -73,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void delete(Long id) {
         this.validateChangeableId(id, "deleted");
-        User dbUser = this.findById(id);
+        User dbUser = userService.findById(id);
         this.userRepository.delete(dbUser);
     }
 
