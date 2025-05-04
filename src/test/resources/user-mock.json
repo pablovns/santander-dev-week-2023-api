@@ -1,0 +1,41 @@
+{
+  "id": 10,
+  "name": "João Silva",
+  "account": {
+    "id": 101,
+    "number": "123456-7",
+    "agency": "0001",
+    "balance": 1500.75,
+    "limit": 1000.00
+  },
+  "card": {
+    "id": 201,
+    "number": "4111 1111 1111 1111",
+    "limit": 5000.00
+  },
+  "features": [
+    {
+      "id": 301,
+      "icon": "pix",
+      "description": "Transferências via Pix instantâneas"
+    },
+    {
+      "id": 302,
+      "icon": "loan",
+      "description": "Empréstimos pré-aprovados"
+    }
+  ],
+  "news": [
+    {
+      "id": 401,
+      "icon": "cashback",
+      "description": "Novo programa de cashback disponível"
+    },
+    {
+      "id": 402,
+      "icon": "investment",
+      "description": "Invista a partir de R$1 com rentabilidade diária"
+    }
+  ]
+}
+
