@@ -5,6 +5,7 @@ import me.dio.domain.repository.UserRepository;
 import me.dio.service.UserService;
 import me.dio.service.exception.BusinessException;
 import me.dio.service.exception.NotFoundException;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserService userService;
 
-    public UserServiceImpl(UserRepository userRepository, UserServiceImpl userService) {
+    public UserServiceImpl(UserRepository userRepository, @Lazy UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
     }
